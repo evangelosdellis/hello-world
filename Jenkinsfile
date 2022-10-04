@@ -6,33 +6,33 @@ pipeline {
     }
 
     stages {
-        stage('Hello World Maven') {
+        stage('Hello-World Maven') {
             steps {
                 git 'https://github.com/evangelosdellis/hello-world.git'
                 sh "mvn clean install package"
                 archiveArtifacts artifacts: '**/*.war', followSymlinks: false
             }
         }
-        stage('Hello World Sonar'){
+        stage('Hello-World Sonar'){
             steps {
                 withSonarQubeEnv('SonarQube') {
                 sh "mvn clean package sonar:sonar -Dsonar.host_url=$SONAR_HOST_URL"
                 }
             }
         }
-        stage('Hello World Nexus'){
+        stage('Hello-World Nexus'){
             steps {
                 nexusPublisher nexusInstanceId: 'Nexus', nexusRepositoryId: 'maven-releases', packages: [[$class: 'MavenPackage', mavenAssetList: [[classifier: '', extension: '', filePath: 'webapp/target/webapp.war']], mavenCoordinate: [artifactId: 'maven-project', groupId: 'com.example.maven-project', packaging: 'war', version: '1.2']]]
             }
         }
-        stage('Hello World Docker Build'){
+        stage('Hello-World Docker Build'){
             steps {
                 sh "rm -Rf webapp.war && \
                 wget http://nexus:8081/repository/maven-releases/com/example/maven-project/maven-project/1.1/maven-project-1.1.war -O ${WORKSPACE}/webapp.war && \
                 docker build -t hello-world-afip:latest ."
             }
         }
-        stage('Hello World Docker Run'){
+        stage('Hello-World Docker Run'){
             steps {
                 script {
                     def set_container = sh(script: ''' CONTAINER_NAME="hello-world-run"
