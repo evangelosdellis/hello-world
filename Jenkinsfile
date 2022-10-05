@@ -50,5 +50,10 @@ pipeline {
                 logParser failBuildOnError: true, parsingRulesPath:'', useProjectRule: true, projectRulePath: 'parserules'
             }
         }
+        stage('Hello-World Install Docker'){
+            steps {
+                ansibleTower jobTemplate: 'install_docker', jobType: 'run', throwExceptionWhenFail: false, towerCredentialsId: 'awx', towerLogLevel: 'full', towerServer: 'AWX'
+            }
+        }
     }
 }
