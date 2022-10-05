@@ -40,16 +40,14 @@ pipeline {
                                                    if [ -n "$OLD" ]; then
                                                    docker rm -f $OLD
                                                    fi
-                                                   docker run -d --name hello-world-run -p 18090:8080 hello-world-afip
-                ''')
-            }
-        }
+                                                   docker run -d --name hello-world-run -p 18090:8080 hello-world-afip ''')
+                    }
+                }
         }
         stage('Hello-World JMeter'){
-            steps{
+            steps {
                 sh "jmeter -JUSER=100 -Jjmeter.save.saveservice.output_format=xml -Jjmeter.save.saveservice.response_data.on_error=true -n -t jmeter_test_plan.jmx  -l testresult.jlt"
             }
         }
     }
-}
 }
