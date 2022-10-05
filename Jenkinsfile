@@ -44,7 +44,11 @@ pipeline {
                 ''')
             }
         }
-
+        stage('Hello-World JMeter'){
+            steps{
+                sh "jmeter -JUSER=100 -Jjmeter.save.saveservice.output_format=xml -Jjmeter.save.saveservice.response_data.on_error=true -n -t jmeter_test_plan.jmx  -l testresult.jlt"
+            }
+        }
     }
 }
 }
