@@ -59,5 +59,20 @@ pipeline {
                 ansibleTower jobTemplate: 'install_docker', jobType: 'run', throwExceptionWhenFail: false, towerCredentialsId: 'awx', towerLogLevel: 'full', towerServer: 'AWX'
             }
         }
+
+        stage('Save Image to Docker Hub'){
+            steps {
+            withCredentials([usernamePassword(credentialsId: 'f5c6762d-f6b3-4676-843a-4fc808b23788', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
+            script{
+               def set_dockerhub = sh (script: ''' docker login -u $USER -p $PASSWORD
+                                                   docker image tag hello-world-afip $USER/hello-world-afip
+                                                   docker push $USER/hello-world-afip
+                                               ''')
+                  }
+               }
+        }
+
+        }
+
     }
 }
